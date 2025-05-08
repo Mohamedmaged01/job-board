@@ -1,5 +1,6 @@
 <script setup>
 import StatsCard from "@/components/candidate/StatsCard.vue";
+import RecentlyAppliedJobs from "@/views/candidate/RecentlyAppliedJobs.vue";
 </script>
 
 <template>
@@ -7,25 +8,16 @@ import StatsCard from "@/components/candidate/StatsCard.vue";
     <h2>Candidate Overview</h2>
     <div class="stats-container">
       <div class="stats-grid">
-        <StatsCard
-          title="Applied Jobs"
-          value="24"
-          type="applications"
-        />
-        
-        <StatsCard
-          title="Favorite Jobs"
-          value="8"
-          type="saved"
-        />
-        
-        <StatsCard 
-          title="Job Alert" 
-          value="85" 
-          type="alert" 
-        />
+        <StatsCard title="Applied Jobs" value="24" type="applications" />
+
+        <StatsCard title="Favorite Jobs" value="8" type="saved" />
+
+        <StatsCard title="Job Alert" value="85" type="alert" />
       </div>
     </div>
+  </div>
+  <div class="container">
+    <RecentlyAppliedJobs />
   </div>
 </template>
 
@@ -55,7 +47,7 @@ import StatsCard from "@/components/candidate/StatsCard.vue";
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .stats-grid > * {
     width: 100%;
   }
