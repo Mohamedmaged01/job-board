@@ -6,6 +6,7 @@ import CandidateLayout from "../layouts/CandidateLayout.vue";
 import Home from "../views/Home.vue";
 import Register from "../components/auth/Register.vue";
 import Login from "../components/auth/Login.vue";
+import page from "../components/auth/page.vue";
 
 const routes = [
   {
@@ -44,7 +45,12 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
+  },{
+  path: '/page',
+  name: 'Page',
+  component: page,
   },
+  
 
   // Add other routes here later
 ];

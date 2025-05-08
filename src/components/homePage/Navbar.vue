@@ -86,7 +86,7 @@
   }
   
   const navigateToLogin = () => {
-    router.push('/Register')
+    router.push('/page')
   }
   
   const navigateToPostJob = () => {

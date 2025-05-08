@@ -1,1 +1,352 @@
-    background-image: url('https://www.theabacus.com.au/wp-content/uploads/2020/12/mob-TA-About-us-page-img01.jpg');
+<template>
+  <div class="container-fluid login-container">
+    <div class="row g-0">
+      <!-- Login Form Section -->
+      <div class="col-lg-6 login-form-section">
+        <div class="login-form-wrapper">
+          <div class="header">
+            <p class="register-prompt">Don't have account? <a href="/register">Create Account</a></p>
+            <h1 class="title">SIGN IN</h1>
+          </div>
+
+          <!-- Alert for validation errors -->
+          <div v-if="alert.show" class="alert alert-dismissible fade show" :class="`alert-${alert.type}`">
+            {{ alert.message }}
+            <button type="button" class="btn-close" @click="alert.show = false"></button>
+          </div>
+
+          <form @submit.prevent="handleLogin" class="needs-validation" :class="{ 'was-validated': validated }" novalidate>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                v-model="email" 
+                required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+              >
+              <div class="invalid-feedback">
+                Please enter a valid email address
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                v-model="password" 
+                required
+                minlength="6"
+              >
+              <div class="invalid-feedback">
+                Password must be at least 6 characters
+              </div>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember" v-model="rememberMe">
+              <label class="form-check-label" for="remember">Remember Me</label>
+            </div>
+
+            <button type="submit" class="continue-btn" :disabled="loading">
+              <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              {{ loading ? 'Signing In...' : 'Sign In →' }}
+            </button>
+          </form>
+
+          <div class="social-login">
+            <p class="divider"><span>OR</span></p>
+            <button class="social-btn facebook-btn">
+              <i class="bi bi-facebook"></i> Sign In with Facebook
+            </button>
+            <button class="social-btn google-btn">
+              <i class="bi bi-google"></i> Sign In with Google
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Image Section -->
+      <div class="col-lg-6 login-side-section">
+        <div class="side-image-wrapper"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+
+const email = ref('')
+const password = ref('')
+const rememberMe = ref(false)
+const validated = ref(false)
+const loading = ref(false)
+const router = useRouter()
+const authStore = useAuthStore()
+
+// Sample users data (should come from your API in production)
+const users = [
+  {
+    id: "2fc3",
+    name: "rehab",
+    username: "rehab",
+    email: "rehab@gmail.com",
+    password: "rehab@gmail.com",
+    role: "candidate"
+  },
+ 
+]
+
+const alert = ref({
+  show: false,
+  type: 'danger',
+  message: ''
+})
+
+const showAlert = (type, message) => {
+  alert.value = { show: true, type, message }
+  setTimeout(() => { alert.value.show = false }, 5000)
+}
+
+const handleLogin = async () => {
+  validated.value = true
+  loading.value = true
+  
+  const form = document.querySelector('.needs-validation')
+  if (!form.checkValidity()) {
+    loading.value = false
+    return
+  }
+
+  try {
+    // Find user in the users array
+    const user = users.find(u => u.email === email.value && u.password === password.value)
+    
+    if (!user) {
+      throw new Error('Invalid email or password')
+    }
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Set user in auth store
+    authStore.user = user
+    if (rememberMe.value) {
+      localStorage.setItem('user', JSON.stringify(user))
+    }
+    
+    showAlert('success', 'Login successful! Redirecting...')
+    setTimeout(() => {
+      // Redirect based on user role
+      if (user.role === 'candidate') {
+        router.push('/candidate-dashboard')
+      } else if (user.role === 'employer') {
+        router.push('/employer-dashboard')
+      } else {
+        router.push('/dashboard')
+      }
+    }, 1500)
+    
+  } catch (error) {
+    loading.value = false
+    showAlert('danger', error.message || 'Login failed. Please try again.')
+  }
+}
+</script>
+
+<style scoped>
+.login-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.login-form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-form-wrapper {
+  max-width: 500px;
+  width: 100%;
+}
+
+.login-side-section {
+  background-image: url('https://www.theabacus.com.au/wp-content/uploads/2020/12/mob-TA-About-us-page-img01.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+.login-side-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(59, 130, 246, 0.85); */
+}
+
+.side-image-wrapper {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 4rem;
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.register-prompt {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.register-prompt a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.continue-btn {
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.continue-btn:hover {
+  background-color: #2563eb;
+}
+
+.continue-btn:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.social-login {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  color: #666;
+  margin: 1.5rem 0;
+}
+
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.divider span {
+  padding: 0 1rem;
+}
+
+.social-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.social-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.facebook-btn {
+  background-color: #1877f2;
+  color: white;
+}
+
+.google-btn {
+  background-color: white;
+  color: #333;
+}
+
+/* Alert styling */
+.alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  min-width: 300px;
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .login-side-section {
+    min-height: auto;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-side-section {
+    display: none;
+  }
+  
+  .login-form-section {
+    padding: 1.5rem;
+  }
+}
+</style>
