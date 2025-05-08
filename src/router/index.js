@@ -3,6 +3,10 @@ import { createRouter, createWebHistory } from "vue-router";
 // Import your views
 import CandidateOverview from "../views/candidate/CandidateOverview.vue";
 import CandidateLayout from "../layouts/CandidateLayout.vue";
+import Home from "../views/Home.vue";
+import Register from "../components/auth/Register.vue";
+import Login from "../components/auth/Login.vue";
+
 const routes = [
   {
     // path: "/candidate",
@@ -19,8 +23,29 @@ const routes = [
       path: '/',
       name: 'Home',
       component: Home
-    ,
   },
+  {
+    path: '/candidate',
+    name: 'CandidateOverview',
+    component: CandidateOverview,
+    },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  //pathb /home go to page home
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+  },
+
   // Add other routes here later
 ];
 

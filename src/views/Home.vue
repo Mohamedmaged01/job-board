@@ -13,6 +13,8 @@
   import AppHeader from '../components/homePage/AppHeader.vue';
   import AppFooter from '../components/homePage/AppFooter.vue';
 
+ 
+
 
   export default {
     name: 'Home',
@@ -23,7 +25,7 @@
       AppFooter
       
 
-     
-    }
+    },
+
   }
   </script>
