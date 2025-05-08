@@ -16,6 +16,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/find-job',
+    name: 'FindJob',
+    component: () => import('../views/FindJob.vue'),
+  }
   // Add other routes here later
 ];
 
