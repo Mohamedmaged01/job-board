@@ -10,16 +10,16 @@ import page from "../components/auth/page.vue";
 
 const routes = [
   {
-    // path: "/candidate",
-    // name: "candidate",
-    // component: CandidateLayout,
-    // children: [
-    //   {
-    //     path: "",
-    //     name: "candidate-overview",
-    //     component: CandidateOverview,
-    //   },
-    // ],
+    path: "/candidate",
+    name: "candidate",
+    component: CandidateLayout,
+    children: [
+      {
+        path: "",
+        name: "candidate-overview",
+        component: CandidateOverview,
+      },
+    ],
     
       path: '/',
       name: 'Home',
@@ -40,7 +40,6 @@ const routes = [
     name: 'Login',
     component: Login,
   },
-  //pathb /home go to page home
   {
     path: '/home',
     name: 'Home',
@@ -52,7 +51,6 @@ const routes = [
   },
   
 
-  // Add other routes here later
 ];
 
 const router = createRouter({
