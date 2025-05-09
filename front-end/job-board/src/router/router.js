@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import PostJob from "../components/PostJob.vue";
 import dashboard from "../components/dashboard.vue";
-
+import MyJobs from "../components/MyJobs.vue";
 const routes = [
   {
     path: "/",
@@ -16,7 +16,7 @@ const routes = [
   {
     path: "/myjobs",
     name: "MyJobs",
-    component: () => import("../components/MyJobs.vue"),
+    component: MyJobs,
   },
 ];
 
