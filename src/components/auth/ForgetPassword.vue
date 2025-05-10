@@ -60,6 +60,7 @@ const alert = ref({
   message: ''
 })
 
+// Alert display helper
 const showAlert = (type, message) => {
   alert.value = { show: true, type, message }
   setTimeout(() => { alert.value.show = false }, 5000)
@@ -78,20 +79,32 @@ const handleReset = async () => {
 
   try {
     // Case-insensitive email search
-    const response = await axios.get(`http://localhost:3000/users?email_like=${encodeURIComponent(email.value.toLowerCase())}`)
-    
-    if (response.data.length === 0) {
-      throw new Error('Email not found in our system')
-    }
+    const response = await axios.get(
+  `http://localhost:3000/users?email_like=${encodeURIComponent(email.value)}`
+)
 
-    // If email exists, redirect to reset password page with email parameter
+const matchedUser = response.data.find(
+  user => user.email.toLowerCase() === email.value.toLowerCase()
+)
+
+if (!matchedUser) {
+  throw new Error('Email not found in our system')
+}
+
+
+    // If email exists, redirect to reset password page
     showAlert('success', 'Please set your new password')
     setTimeout(() => {
       router.push(`/reset-password?email=${encodeURIComponent(email.value)}`)
     }, 1500)
 
   } catch (error) {
-    showAlert('danger', error.message || 'Failed to process your request')
+    // Handle both server and manual error
+    if (error.response && error.response.status === 404) {
+      showAlert('danger', 'Email not found in our system')
+    } else {
+      showAlert('danger', error.message || 'Failed to process your request')
+    }
   } finally {
     loading.value = false
   }

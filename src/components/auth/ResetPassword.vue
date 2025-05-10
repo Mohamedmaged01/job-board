@@ -30,7 +30,6 @@
                     minlength="6"
                     :class="{'is-invalid': validated && (!password || password.length < 6)}"
                   >
-                  <span class="input-group-text">⭕️</span>
                 </div>
                 <div class="invalid-feedback" v-if="validated && (!password || password.length < 6)">
                   Password must be at least 6 characters
@@ -49,7 +48,6 @@
                     required
                     :class="{'is-invalid': validated && confirmPassword !== password}"
                   >
-                  <span class="input-group-text">⭕️</span>
                 </div>
                 <div class="invalid-feedback" v-if="validated && confirmPassword !== password">
                   Passwords do not match

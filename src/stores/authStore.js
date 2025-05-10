@@ -110,13 +110,12 @@ import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
-  const error = ref(null); // حالة لتخزين رسالة الخطأ
+  const error = ref(null);
   const router = useRouter();
 
 
   const login = async (email, password) => {
-    error.value = null; // إعادة تعيين الخطأ عند كل محاولة تسجيل دخول جديدة
-
+    error.value = null; 
     const matchedUser = users.find(
       (u) => u.email === email && u.password === password
     );
@@ -146,7 +145,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   return {
     user,
-    error,       // ← أضفنا error هنا
+    error,       
     login,
     logout,
     getCurrentUser,
