@@ -7,6 +7,8 @@ import Home from "../views/Home.vue";
 import Register from "../components/auth/Register.vue";
 import Login from "../components/auth/Login.vue";
 import page from "../components/auth/page.vue";
+import ForgetPassword from "../components/auth/ForgetPassword.vue";
+import ResetPassword from "../components/auth/ResetPassword.vue";
 
 const routes = [
   {
@@ -49,7 +51,17 @@ const routes = [
   name: 'Page',
   component: page,
   },
-  
+  {
+    path: "/ForgetPassword",
+    name: "ForgetPassword",
+    component: ForgetPassword,
+  }
+  ,{
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPassword,
+
+  }
 
 ];
 

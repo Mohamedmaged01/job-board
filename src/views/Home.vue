@@ -3,6 +3,8 @@
       <AppHeader />
       <Navbar />
       <section1 />
+      <BecomeaCandidate />
+
       <Popular />
       <AppFooter />
     </div>
@@ -14,6 +16,7 @@
   import AppHeader from '../components/homePage/AppHeader.vue';
   import AppFooter from '../components/homePage/AppFooter.vue';
   import section1 from '../components/homePage/section1.vue';
+  import BecomeaCandidate from '../components/homePage/BecomeaCandidate.vue';
 
  
 
@@ -25,6 +28,7 @@
       AppHeader,
       section1,
       Popular,
+      BecomeaCandidate,
       AppFooter
       
 

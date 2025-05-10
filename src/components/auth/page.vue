@@ -1,33 +1,53 @@
 <template>
-  <div class="role-selection-page">
-    <div class="header">
-      <p class="login-prompt">Already have account? <a href="login">Log in</a></p>
-      <h1 class="title">CREATE ACCOUNT AS A.</h1>
-    </div>
-
-    <div class="role-selection">
-      <div class="error-message" v-if="error">{{ error }}</div>
-      
-      <div class="role-options">
-        <label class="role-option" :class="{ 'selected': role === 'candidate' }">
-          <input type="radio" v-model="role" value="candidate" required>
-          <div class="role-content">
-            <div class="role-icon">👤</div>
-            <span class="role-label">Candidate</span>
-          </div>
-        </label>
-
-        <label class="role-option" :class="{ 'selected': role === 'employer' }">
-          <input type="radio" v-model="role" value="employer" required>
-          <div class="role-content">
-            <div class="role-icon">🏢</div>
-            <span class="role-label">Employer</span>
-          </div>
-        </label>
+  <div class="role-selection-container">
+    <div class="role-selection-card">
+      <div class="header-section">
+        <p class="login-prompt">Already have an account? <router-link to="/login">Log in</router-link></p>
+        <h1 class="title">CREATE ACCOUNT AS A...</h1>
       </div>
-    </div>
 
-    <button class="continue-btn" @click="validateSelection">Continue →</button>
+      <div class="role-selection-section">
+        <div class="error-message" v-if="error">{{ error }}</div>
+        
+        <div class="role-options-grid">
+          <label class="role-option" :class="{ 'selected': role === 'candidate' }">
+            <input type="radio" v-model="role" value="candidate" required>
+            <div class="role-content">
+              <div class="role-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <span class="role-label">Candidate</span>
+              <p class="role-description">Looking for your next career opportunity</p>
+            </div>
+          </label>
+
+          <label class="role-option" :class="{ 'selected': role === 'employer' }">
+            <input type="radio" v-model="role" value="employer" required>
+            <div class="role-content">
+              <div class="role-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <span class="role-label">Employer</span>
+              <p class="role-description">Hiring top talent for your organization</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <button class="continue-button" @click="validateSelection">
+        Continue
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -41,7 +61,7 @@ const router = useRouter()
 
 const validateSelection = () => {
   if (!role.value) {
-    error.value = 'Please select a role'
+    error.value = 'Please select a role to continue'
     return
   }
   
@@ -51,193 +71,115 @@ const validateSelection = () => {
   })
 }
 </script>
+
 <style scoped>
-.role-selection-page {
-  min-height: 100vh;
+.role-selection-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #f9fafb;
+  min-height: 100vh;
+  background-color: #f8fafc;
   padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.header {
-  margin-bottom: 2rem;
+.role-selection-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
   text-align: center;
 }
 
+.header-section {
+  margin-bottom: 2rem;
+}
+
 .login-prompt {
-  color: #777;
-  margin-bottom: 1rem;
+  color: #64748b;
   font-size: 0.95rem;
+  margin-bottom: 1.5rem;
 }
 
 .login-prompt a {
   color: #4f46e5;
-  text-decoration: underline;
-  transition: color 0.3s;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .login-prompt a:hover {
-  color: #312e81;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 2rem;
-}
-
-.role-selection {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 1.5rem;
-}
-
-.role-options {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.role-option {
-  flex: 1;
-  border: 2px solid #e0e7ff;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-.role-option:hover {
-  border-color: #a5b4fc;
-  transform: translateY(-4px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-}
-
-.role-option.selected {
-  border-color: #6366f1;
-  background-color: #eef2ff;
-}
-
-.role-option input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-}
-
-.role-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.role-icon {
-  font-size: 2rem;
-}
-
-.role-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-.role-option.selected .role-label {
   color: #4338ca;
-  font-weight: 600;
-}
-
-.error-message {
-  color: #dc2626;
-  font-size: 0.875rem;
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-.continue-btn {
-  width: 100%;
-  max-width: 500px;
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.continue-btn:hover {
-  background-color: #4338ca;
-  transform: scale(1.02);
-}
-</style>
-
-
-<!-- <style scoped>
-.role-selection-page {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.header {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.login-prompt {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
-.login-prompt a {
-  color: #3b82f6;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .title {
   font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.role-selection-section {
   margin-bottom: 2rem;
 }
 
-.role-selection {
-  margin-bottom: 2rem;
-}
-
-.role-options {
-  display: flex;
-  gap: 1rem;
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
   margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.role-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
 .role-option {
-  flex: 1;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
+  display: block;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   padding: 1.5rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  position: relative;
+  overflow: hidden;
 }
 
 .role-option:hover {
-  border-color: #93c5fd;
+  border-color: #c7d2fe;
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
 }
 
 .role-option.selected {
-  border-color: #3b82f6;
-  background-color: #eff6ff;
+  border-color: #4f46e5;
+  background-color: #f5f7ff;
+}
+
+.role-option.selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background-color: #4f46e5;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+.role-option.selected::before {
+  content: '✓';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: white;
+  font-size: 0.7rem;
+  z-index: 1;
 }
 
 .role-option input[type="radio"] {
@@ -249,45 +191,92 @@ const validateSelection = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .role-icon {
-  font-size: 2rem;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e7ff;
+  border-radius: 50%;
+  color: #4f46e5;
+  transition: all 0.3s;
+}
+
+.role-option.selected .role-icon {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.role-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .role-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #4b5563;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  transition: color 0.2s;
 }
 
 .role-option.selected .role-label {
-  color: #1e40af;
-  font-weight: 600;
+  color: #4f46e5;
 }
 
-.error-message {
-  color: #dc3545;
-  font-size: 0.875rem;
-  text-align: center;
-  margin-top: 0.5rem;
+.role-description {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+  line-height: 1.5;
 }
 
-.continue-btn {
+.continue-button {
   width: 100%;
-  background-color: #3b82f6;
+  padding: 0.875rem;
+  background-color: #4f46e5;
   color: white;
-  padding: 0.75rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.continue-btn:hover {
-  background-color: #2563eb;
+.continue-button:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
 }
-</style> -->
+
+.continue-button:active {
+  transform: translateY(0);
+}
+
+.continue-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 640px) {
+  .role-selection-card {
+    padding: 1.5rem;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+  }
+  
+  .role-option {
+    padding: 1.25rem;
+  }
+}
+</style>
