@@ -1,26 +1,45 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
-const activeItem = ref( '/candidate' ); // Default active item
+const route = useRoute();
+const activeItem = ref(route.name); // Initialize to current route name
 
 const menuItems = [
-  { icon: 'grid-view', title: 'overview', route: '/candidate' },
-  { icon: 'briefcase', title: 'Applied Jobs', route: 'candidate-applications' },
-  { icon: 'heart', title: 'favorite Jobs', route: 'candidate-saved-jobs' },
+  { icon: "grid-view", title: "Overview", route: "candidate-overview" },
+  { icon: "briefcase", title: "Applied Jobs", route: "applied-jobs" },
+  { icon: "heart", title: "candidate-saved-jobs", route: "candidate-saved-jobs" },
   // { icon: 'alarm', title: 'Job Alerts', route: 'candidate-alerts' },
-  { icon: 'logout', title: 'Logout', route: 'logout' }
+  { icon: "logout", title: "Logout", route: "logout" },
 ];
 
-const navigateTo = (route) => {
-  if (route === 'logout') {
+const navigateTo = async (routeName) => {
+  if (routeName === "logout") {
     // Handle logout logic
     return;
   }
-  activeItem.value = route;
-  router.push({ name: route });
+  if (route.name === routeName) {
+    return; // Prevent redundant navigation
+  }
+  try {
+    await router.push( { name: routeName } );
+    
+    activeItem.value = routeName;
+    // reload the page to reflect the new route
+    window.location.reload();
+  } catch (error) {
+    console.error("Navigation error:", error);
+  }
 };
+
+// Watch for route changes to update activeItem accordingly
+watch(
+  () => route.name,
+  (newName) => {
+    activeItem.value = newName;
+  }
+);
 </script>
 
 <template>
@@ -41,8 +60,8 @@ const navigateTo = (route) => {
       <div class="menu-section">
         <h5 class="section-title">Candidate Dashboard</h5>
         <ul>
-          <li 
-            v-for="item in menuItems.slice(0, 5)" 
+          <li
+            v-for="item in menuItems.slice(0, 5)"
             :key="item.route"
             :class="{ active: activeItem === item.route }"
             @click="navigateTo(item.route)"
@@ -58,8 +77,8 @@ const navigateTo = (route) => {
       <div class="menu-section">
         <h5 class="section-title">Account</h5>
         <ul>
-          <li 
-            v-for="item in menuItems.slice(5)" 
+          <li
+            v-for="item in menuItems.slice(5)"
             :key="item.route"
             :class="{ active: activeItem === item.route }"
             @click="navigateTo(item.route)"
@@ -169,7 +188,7 @@ li.active {
 }
 
 li.active::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -205,7 +224,7 @@ li.active .menu-title {
 
 /* Simple icon representation - replace with actual icon component or font icons */
 [class^="icon-"]::before {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-style: normal;
   font-weight: normal;
   speak: never;
@@ -219,13 +238,31 @@ li.active .menu-title {
   -webkit-font-smoothing: antialiased;
 }
 
-.icon-grid-view::before { content: "\e8a8"; }
-.icon-profile::before { content: "\e853"; }
-.icon-briefcase::before { content: "\e8ae"; }
-.icon-heart::before { content: "\e87e"; }
-.icon-alarm::before { content: "\e855"; }
-.icon-message::before { content: "\e0cb"; }
-.icon-resume::before { content: "\e24a"; }
-.icon-password::before { content: "\e899"; }
-.icon-logout::before { content: "\e9ba"; }
+.icon-grid-view::before {
+  content: "\e8a8";
+}
+.icon-profile::before {
+  content: "\e853";
+}
+.icon-briefcase::before {
+  content: "\e8ae";
+}
+.icon-heart::before {
+  content: "\e87e";
+}
+.icon-alarm::before {
+  content: "\e855";
+}
+.icon-message::before {
+  content: "\e0cb";
+}
+.icon-resume::before {
+  content: "\e24a";
+}
+.icon-password::before {
+  content: "\e899";
+}
+.icon-logout::before {
+  content: "\e9ba";
+}
 </style>

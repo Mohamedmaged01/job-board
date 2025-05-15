@@ -1,4 +1,3 @@
-<!-- JobCard.vue -->
 <template>
   <div class="job-card">
     <!-- Company Header -->

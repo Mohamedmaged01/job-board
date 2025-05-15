@@ -6,6 +6,7 @@ import CandidateLayout from "../layouts/CandidateLayout.vue";
 import JobDetails from "../pages/JobDetails.vue";
 import ApplyJob from "../pages/ApplyJob.vue";
 import ThankYouPage from "../pages/ThankYouPage.vue";
+import AppliedJobs from "../views/candidate/AppliedJobs.vue";
 const routes = [
   {
     path: "/candidate",
@@ -16,6 +17,11 @@ const routes = [
         path: "",
         name: "candidate-overview",
         component: CandidateOverview,
+      },
+      {
+        path: "applied-jobs",
+        name: "applied-jobs",
+        component: AppliedJobs,
       },
     ],
   },
